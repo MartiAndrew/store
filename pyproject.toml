@@ -1,0 +1,147 @@
+[tool.poetry]
+name = "store"
+version = "0.1.0"
+description = ""
+authors = [
+
+]
+maintainers = [
+
+]
+readme = "README.md"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.103.1"
+uvicorn = "^0.23.2"
+pydantic = "^2.4.1"
+pydantic-settings = "^2.0.3"
+yarl = "^1.9.2"
+aiofiles = "^23.2.1"
+httptools = "^0.6.0"
+async-exit-stack = "^1.0.1"
+async-generator = "^1.10"
+loguru = "^0.7.2"
+aio-pika = "9.3.0"
+httpx = "^0.25.0"
+PyJWT = "^2.8.0"
+dnspython = "^2.4.2"
+prometheus-client = "^0.17.1"
+boto3 = "1.28.55"
+python-multipart = "^0.0.6"
+orjson = "^3.9.7"
+gunicorn = "^21.2.0"
+protobuf = "4.24.3"
+redis = "^5.0.1"
+types-redis = "^4.6.0.7"
+bandit = "1.7.5"
+taskiq-aio-pika = "^0.4.0"
+sentry-sdk = {extras = ["fastapi"], version = "^1.31.0"}
+fastapi-localization = "^0.0a2.dev3"
+opentelemetry-sdk = {version = "1.20.0", allow-prereleases = true}
+opentelemetry-exporter-otlp = {version = "1.20.0", allow-prereleases = true}
+opentelemetry-instrumentation = "^0.41b0"
+opentelemetry-instrumentation-redis = "^0.41b0"
+opentelemetry-api = {version = "1.20.0", allow-prereleases = true}
+opentelemetry-instrumentation-fastapi = "^0.41b0"
+stackprinter = "^0.2.10"
+asgi-correlation-id = "^4.2.0"
+taskiq-dependencies = "^1.4.2"
+taskiq = "0.9.1"
+aiohttp = "^3.8.5"
+psycopg = {version = "3.2.6", extras = ["binary", "pool"]}
+psycopg-pool = "3.2.6"
+prometheus-fastapi-instrumentator = "^6.1.0"
+opentelemetry-instrumentation-logging = "^0.41b0"
+opentelemetry-instrumentation-aio-pika = "^0.41b0"
+annotated-types = "^0.7.0"
+pydantic-core = "^2.21.0"
+numpy = "^2.1.2"
+aiokafka = "^0.12.0"
+polyfactory = "^2.19.0"
+aiochclient = "^2.6.0"
+pymilvus = "2.5.6"
+ujson = "^5.10.0"
+pandas = "^2.2.3"
+sqlalchemy = "^2.0.43"
+elasticsearch = "^9.1.0"
+pbr = "^7.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
+flake8 = "^6.1.0"
+mypy = "^1.5.1"
+isort = "^5.12.0"
+yesqa = "^1.5.0"
+pre-commit = "^3.4.0"
+wemake-python-styleguide = "^0.18.0"
+black = "^23.9.1"
+autoflake = "^2.2.1"
+pytest-cov = "^4.1.0"
+nest-asyncio = "^1.5.8"
+pytest-env = "^1.0.1"
+requests = "^2.31.0"
+respx = "^0.20.2"
+pytest-mock = "^3.11.1"
+moto = "^4.2.4"
+factory-boy = "^3.3.0"
+pydantic-factories = "^1.17.3"
+fakeredis = "2.19.0"
+types-python-dateutil = "^2.8.19.14"
+freezegun = "^1.2.2"
+trio = "^0.22.2"
+asgi-lifespan = "^2.1.0"
+types-pytz = "^2023.3.1.1"
+sqlfluff = "2.3.2"
+pytest-xdist = "^3.3.1"
+anyio = "<4.0.0"
+
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+src_paths = ["store", "configuration"]
+known_common = "common"
+sections = "FUTURE,STDLIB,THIRDPARTY,COMMON,FIRSTPARTY,LOCALFOLDER"
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+allow_subclassing_any = true
+allow_untyped_calls = true
+pretty = true
+show_error_codes = true
+implicit_reexport = true
+allow_untyped_decorators = true
+warn_return_any = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+]
+env = [
+    "STORE_LOGGER_LOG_LEVEL=DEBUG",
+    "STORE_ENVIRONMENT=pytest",
+]
+addopts = [
+    "--import-mode=importlib",
+]
+
+[tool.coverage.run]
+omit = [
+    "*/web/main.py",
+    "*service_db/migrations/*",
+    "*/web/lifetime.py",
+    "*/web/application.py",
+    "*/web/exception_handlers.py",
+]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

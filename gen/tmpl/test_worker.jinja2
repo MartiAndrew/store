@@ -1,0 +1,32 @@
+from typing import AsyncGenerator
+
+import pytest
+
+from {{ service }}.workers.{{ worker_name }}.{{ worker_name }} import (
+    {{worker_name.split('_')|map('capitalize')|join}}ClientsState,
+    {{worker_name.split('_')|map('capitalize')|join}}Msg,
+    process,
+)
+
+
+@pytest.fixture
+async def state(
+    mock_clients: None,
+) -> AsyncGenerator[{{worker_name.split('_')|map('capitalize')|join}}ClientsState, None]:
+    """
+    Фикстура для запуска сервисов воркера.
+
+    :yields: Стейт сервисов воркера.
+    """
+    state = await {{worker_name.split('_')|map('capitalize')|join}}ClientsState.clients_startup()
+    yield state
+    await state.clients_shutdown()
+
+
+@pytest.mark.anyio
+async def test_worker(
+    {{ worker_name }}_state: {{worker_name.split('_')|map('capitalize')|join}}ClientsState,
+) -> None:
+    """Проверка {{ worker_name }}."""
+    await process({{worker_name.split('_')|map('capitalize')|join}}Msg(name="name"), {{ worker_name }}_state)
+    assert True
