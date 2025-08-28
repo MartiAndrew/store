@@ -1,5 +1,4 @@
 import sys
-from typing import Awaitable, Callable
 
 import psycopg_pool
 from fastapi import FastAPI, Request, Response
@@ -18,19 +17,15 @@ from configuration.settings import settings
 from store import metrics
 
 
-def register_startup_event(  # noqa: WPS213
-    app: FastAPI,
-) -> Callable[[], Awaitable[None]]:  # pragma: no cover
+def register_startup_event(app: FastAPI) -> None:
     """
     Вызов функция для старта приложения.
 
     Настраивается телеметрия, клиенты и taskiq при необходимости.
 
     :param app: the fastAPI application.
-    :return: function that actually performs actions.
     """
 
-    @app.on_event("startup")
     async def _startup() -> None:  # noqa: WPS430
         web_clients_state: WebClientsState = await WebClientsState.clients_startup()
         app.state.clients = web_clients_state
@@ -42,28 +37,24 @@ def register_startup_event(  # noqa: WPS213
         )
         await setup_taskiq()
 
-    return _startup
+    app.add_event_handler("startup", _startup)
 
 
-def register_shutdown_event(
-    app: FastAPI,
-) -> Callable[[], Awaitable[None]]:  # pragma: no cover
+def register_shutdown_event(app: FastAPI) -> None:
     """
     Выполняет действия, необходимые для завершения приложения.
 
     :param app: fastAPI application.
-    :return: function that actually performs actions.
     """
 
-    @app.on_event("shutdown")
     async def _shutdown() -> None:  # noqa: WPS430
         await app.state.clients.clients_shutdown()
         await stop_taskiq()
 
-    return _shutdown
+    app.add_event_handler("shutdown", _shutdown)
 
 
-def register_exception_handler(
+def register_exception_handler(  # noqa: WPS231 C901
     app: FastAPI,
 ) -> None:
     """
@@ -73,11 +64,11 @@ def register_exception_handler(
     """
 
     @app.exception_handler(ServiceError)
-    async def passport_exception_handler(  # noqa: WPS430
+    async def shub_exception_handler(  # noqa: WPS430
         request: Request,
         exc: ServiceError,
     ) -> Response:
-        """Обработка ошибок PassportException.
+        """Обработка ошибок shub_Exception.
 
         :param request: запрос от пользователя
         :param exc: ошибка возникшая во время обработки запроса
@@ -88,6 +79,16 @@ def register_exception_handler(
         if body.get("message") and body.get("verbose_message"):
             body["message"] = gettext(body.get("message", ""))
             body["verbose_message"] = gettext(body.get("verbose_message", ""))
+
+            if body.get("extra") and "parameter_name" in body["extra"]:
+                body["message"] = body["message"].format(
+                    parameter_name="".join(body["extra"]["parameter_name"]),
+                )
+                body["verbose_message"] = body["verbose_message"].format(
+                    parameter_name="".join(body["extra"]["parameter_name"]),
+                )
+            if body.get("extra") and "msg" in body["extra"]:
+                body["extra"]["msg"] = gettext(body["extra"]["msg"])
 
         return JSONResponse(
             jsonable_encoder(body),

@@ -8,7 +8,9 @@ from fastapi.responses import ORJSONResponse
 from prometheus_fastapi_instrumentator.instrumentation import (
     PrometheusFastApiInstrumentator,
 )
+from pydantic_core import ValidationError
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.staticfiles import StaticFiles
 
 from common.fastapi.middlewares import HeadersMiddleware
 from common.locale.localization import get_locales
@@ -20,7 +22,7 @@ from store.web import lifetime
 from store.web.api.router import api_router
 from store.web.exception_handlers import validation_exception_handler
 
-WEB_APP_ROOT = Path(__file__).parent.parent
+WEB_APP_ROOT = Path(__file__).parent
 
 
 def init_app() -> FastAPI:
@@ -34,10 +36,15 @@ def init_app() -> FastAPI:
         title=SERVICE_NAME_LOWER,
         description=SERVICE_NAME_LOWER,
         version=metadata.version(SERVICE_NAME_LOWER),
-        docs_url="/api/docs",
-        redoc_url="/api/redoc",
+        docs_url=None,
+        redoc_url=None,
         openapi_url="/api/openapi.json",
         default_response_class=ORJSONResponse,
+    )
+    app.mount(
+        "/static",
+        StaticFiles(directory=WEB_APP_ROOT / "static"),
+        name="static",
     )
 
     init_logger()
@@ -50,7 +57,14 @@ def init_app() -> FastAPI:
     lifetime.register_startup_event(app)
     lifetime.register_shutdown_event(app)
     lifetime.register_exception_handler(app)
-    app.add_exception_handler(RequestValidationError, validation_exception_handler)
+    app.add_exception_handler(
+        RequestValidationError,
+        validation_exception_handler,  # type: ignore
+    )
+    app.add_exception_handler(
+        ValidationError,
+        validation_exception_handler,  # type: ignore
+    )
 
     return app
 
