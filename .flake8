@@ -5,7 +5,7 @@ max-annotation-complexity = 4
 max-complexity = 6
 max-awaits = 10
 inline-quotes = double
-max-line-length = 88
+max-line-length = 120
 extend-ignore = E203
 docstring_style=sphinx
 

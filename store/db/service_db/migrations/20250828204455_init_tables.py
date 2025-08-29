@@ -30,8 +30,7 @@ def upgrade(cur):
             id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
             order_id BIGINT NOT NULL REFERENCES customer_order(id) ON DELETE CASCADE,
             product_id INT NOT NULL REFERENCES product(id) ON DELETE RESTRICT,
-            quantity INT NOT NULL CHECK (quantity > 0),
-            price NUMERIC(12,2) NOT NULL
+            quantity INT NOT NULL
         );
         CREATE UNIQUE INDEX idx_order_item_order_product
         ON order_item(order_id, product_id);

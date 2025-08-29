@@ -8,7 +8,6 @@ from redis.asyncio import ConnectionPool
 
 from common.constance.lifetime import setup_constance, stop_constance
 from common.elastic.lifetime import setup_elasticsearch, stop_elasticsearch
-from common.rabbitmq.connection import RabbitConnection
 from common.rabbitmq.lifetime import setup_rabbit, stop_rabbit
 from common.service_db.lifetime import setup_service_db, stop_service_db
 from common.service_db.service_db_health import service_db_health

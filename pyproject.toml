@@ -96,7 +96,7 @@ freezegun = "^1.2.2"
 trio = "^0.22.2"
 asgi-lifespan = "^2.1.0"
 types-pytz = "^2023.3.1.1"
-sqlfluff = "2.3.2"
+sqlfluff = "^3.4.2"
 pytest-xdist = "^3.3.1"
 anyio = "<4.0.0"
 

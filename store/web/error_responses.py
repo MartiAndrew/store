@@ -27,20 +27,11 @@ order_not_found = ErrorResponse(
     status_code=status.HTTP_404_NOT_FOUND,
 )
 
-product_not_found = ErrorResponse(
-    body=ErrResponseBody(
-        message="Товар не найден.",
-        error_code=PARAMS_NOT_FOUND_ERR_CODE,
-        verbose_message="Товар не найден.",
-    ),
-    status_code=status.HTTP_404_NOT_FOUND,
-)
-
 order_check_violation = ErrorResponse(
     body=ErrResponseBody(
-        message="Недостаточное количество товара.",
+        message="Недостаточное количество товара или товар не найден.",
         error_code=PARAMS_CHECK_VIOLATION_ERR_CODE,
-        verbose_message="Недостаточное количество товара.",
+        verbose_message="Недостаточное количество товара или товар не найден.",
     ),
     status_code=status.HTTP_409_CONFLICT,
 )

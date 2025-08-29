@@ -5,7 +5,9 @@ from common.errors.schema import ErrorResponse, ErrResponseBody
 
 from store.web.error_responses import (  # noqa: WPS235
     PARAMS_VALIDATION_ERR_CODE,
-    user_not_authorized
+    order_check_violation,
+    order_not_found,
+    user_not_authorized,
 )
 
 
@@ -13,6 +15,18 @@ class UserNotAuthorizedError(ServiceError):
     """Пользователь не авторизован."""
 
     response_data: ErrorResponse = user_not_authorized
+
+
+class OrderNotFoundError(ServiceError):
+    """Заказ не найден."""
+
+    response_data: ErrorResponse = order_not_found
+
+
+class OrderCheckViolationError(ServiceError):
+    """Ошибка консистентности продукта в заказе."""
+
+    response_data: ErrorResponse = order_check_violation
 
 
 class ParameterValidationError(ServiceError):

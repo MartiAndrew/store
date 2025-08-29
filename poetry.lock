@@ -277,17 +277,6 @@ test = ["anyio[trio]", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=
 trio = ["trio (<0.22)"]
 
 [[package]]
-name = "appdirs"
-version = "1.4.4"
-description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-optional = false
-python-versions = "*"
-files = [
-    {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
-    {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
-]
-
-[[package]]
 name = "asgi-correlation-id"
 version = "4.3.4"
 description = "Middleware correlating project logs to individual requests"
@@ -4190,29 +4179,28 @@ sqlcipher = ["sqlcipher3_binary"]
 
 [[package]]
 name = "sqlfluff"
-version = "2.3.2"
+version = "3.4.2"
 description = "The SQL Linter for Humans"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.9"
 files = [
-    {file = "sqlfluff-2.3.2-py3-none-any.whl", hash = "sha256:85c8b683e283ff632fe28529ddb60585ea2d1d3c614fc7a1db171632b99dcce3"},
-    {file = "sqlfluff-2.3.2.tar.gz", hash = "sha256:3403ce7e9133766d7336b7e26638657ec6cc9e5610e35186b7f02cc427dd49b7"},
+    {file = "sqlfluff-3.4.2-py3-none-any.whl", hash = "sha256:14109d858da448a4bd0be5a107f4e48de33b1749e6cfc8cc03ec6c045bc9b8ad"},
+    {file = "sqlfluff-3.4.2.tar.gz", hash = "sha256:1777272e4fdac5adef1b89ec25675426e77285d4dc95a055b12bd24181e33f40"},
 ]
 
 [package.dependencies]
-appdirs = "*"
 chardet = "*"
-click = "*"
+click = "<=8.3.0"
 colorama = ">=0.3"
 diff-cover = ">=2.5.0"
 Jinja2 = "*"
 pathspec = "*"
+platformdirs = "*"
 pytest = "*"
 pyyaml = ">=5.1"
 regex = "*"
 tblib = "*"
 tqdm = "*"
-typing-extensions = "*"
 
 [[package]]
 name = "sqlparse"
@@ -4964,4 +4952,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "05c425920a8c5d5e3ef2870e481c9c04d407fc57324fa076dd6731185be1f98b"
+content-hash = "53840579d8c842855d8dbd070107f0c5b4ea20f620d42bdd4bd5691f357fbf70"

@@ -1,0 +1,25 @@
+[sqlfluff]
+exclude_rules=L031,L026
+large_file_skip_byte_limit = 25000
+
+[sqlfluff:templater:placeholder]
+param_style = pyformat
+user_id = 1
+video_uuid = "46559569-7f0d-4354-beee-453e104eeff9"
+video_embedding = [1.0]
+aestetic_score = 1.0
+technical_score = 1.0
+total_score = 1.0
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.literals]
+# Null & Boolean Literals
+capitalisation_policy = upper

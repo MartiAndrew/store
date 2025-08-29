@@ -25,7 +25,7 @@ from store.web.exception_handlers import validation_exception_handler
 WEB_APP_ROOT = Path(__file__).parent
 
 
-def init_app() -> FastAPI:
+def init_app() -> FastAPI:  # noqa: WPS213
     """
     Инициализация и получение экземпляра приложения.
 

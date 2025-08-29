@@ -6,7 +6,10 @@ from starlette.requests import Request
 
 from common.locale.localization import locale_gettext
 
-from store.web.error_responses import PARAMS_MISSING_ERR_CODE, PARAMS_VALIDATION_ERR_CODE
+from store.web.error_responses import (
+    PARAMS_MISSING_ERR_CODE,
+    PARAMS_VALIDATION_ERR_CODE,
+)
 from store.web.errors import (
     FloatValidationError,
     IntegerValidationError,
