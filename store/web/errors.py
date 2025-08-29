@@ -41,7 +41,7 @@ class BaseValidationError(Exception):
         return {
             "message": gettext(self.message),
             "error_code": self.error_code,
-            "verbose_message": str(self.error_json),
+            "verbose_message": gettext(self.message),
         }
 
     @property
@@ -61,26 +61,40 @@ class BaseValidationError(Exception):
 class FloatValidationError(BaseValidationError):
     """Ошибка валидации поля с float числом."""
 
-    message = "Некорректное значение Float."
-    error_code = 18
+    message = "Недопустимое значение Float."
+    error_code = 3
 
 
 class IntegerValidationError(BaseValidationError):
     """Ошибка валидации поля с int числом."""
 
-    message = "Некорректное значение Integer."
-    error_code = 18
+    message = "Недопустимое значение Integer."
+    error_code = 3
 
 
 class UuidValidationError(BaseValidationError):
     """Ошибка валидации UUID поля."""
 
-    message = "Некорректное значение UUID."
-    error_code = 18
+    message = "Недопустимое значение UUID."
+    error_code = 3
 
 
-class UploadfileValidationError(BaseValidationError):
-    """Ошибка валидации UUID поля."""
+class StringValidationError(BaseValidationError):
+    """Ошибка валидации строки."""
 
-    message = "Что-то пошло не так."
-    error_code = 2
+    message = "Недопустимое значение String."
+    error_code = 3
+
+
+class NonNegativeIntValidationError(BaseValidationError):
+    """Ошибка валидации NonNegativeInt."""
+
+    message = "Недопустимое значение NonNegativeInt."
+    error_code = 3
+
+
+class ListValidationError(BaseValidationError):
+    """Ошибка валидации строки."""
+
+    message = "Недопустимое значение List."
+    error_code = 3
