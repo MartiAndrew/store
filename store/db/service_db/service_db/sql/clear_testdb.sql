@@ -1,2 +1,0 @@
--- TRUNCATE TABLE your_tables,your_tables
--- RESTART IDENTITY;

@@ -39,10 +39,6 @@ class BaseClientState(BaseModel):
     - state.clients в taskiq
     - Параметр функции process в Воркерах
     Список возможных клиентов из common части можно посмотреть в CLIENTS_LIFETIME.
-    Для подклчюения клиента из common можно воспользоваться генератороа
-    python ./gen/generate.py connect <service_name>
-    Он автоматически добавится в Настройки и клиенты для Web и taskiq.
-    В воркерах придется подключать руками.
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True)

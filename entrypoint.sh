@@ -30,7 +30,6 @@ case $1 in
         Please use one from next arguments:
             'start_app' - start store application
             'shell' - run shell into docker container of an application
-            'ruff' - start linter Ruff
             'format' - start formating Ruff linter
             'sqlfluff' - start linter SqlFluff
             'mypy' - start checking type annotation

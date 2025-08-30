@@ -64,7 +64,7 @@ def register_exception_handler(  # noqa: WPS231 C901
     """
 
     @app.exception_handler(ServiceError)
-    async def shub_exception_handler(  # noqa: WPS430
+    async def store_exception_handler(  # noqa: WPS430
         request: Request,
         exc: ServiceError,
     ) -> Response:
