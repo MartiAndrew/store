@@ -7,15 +7,7 @@ from store.web.error_responses import (  # noqa: WPS235
     PARAMS_VALIDATION_ERR_CODE,
     order_check_violation,
     order_not_found,
-    user_not_authorized,
 )
-
-
-class UserNotAuthorizedError(ServiceError):
-    """Пользователь не авторизован."""
-
-    response_data: ErrorResponse = user_not_authorized
-
 
 class OrderNotFoundError(ServiceError):
     """Заказ не найден."""
