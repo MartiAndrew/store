@@ -1,130 +1,52 @@
 version: '3.7'
 
 x-common-variables: &common-env-variables
-  METAN_WEB_HOST: 0.0.0.0
-  METAN_SERVICEDB_HOST: store-pg-db
-  METAN_SERVICEDB_PORT: 5432
-  METAN_SERVICEDB_USER: store
-  METAN_SERVICEDB_PASSWORD: store
-  METAN_SERVICEDB_BASE_NAME: store
-  METAN_TASKIQ_RABBIT_DSN: amqp://guest:guest@vector:5672/
-
-
-networks:
-  app-tier:
-    driver: bridge
-
+  STORE_WEB_HOST: 0.0.0.0
+  STORE_SERVICEDB_HOST: store-pg-db
+  STORE_SERVICEDB_PORT: 5432
+  STORE_SERVICEDB_USER: store
+  STORE_SERVICEDB_PASSWORD: store
+  STORE_SERVICEDB_BASE_NAME: store
 
 services:
   api:
     build:
       context: .
       dockerfile: ./deploy/Dockerfile
-      args:
-        METAN_VERSION: ${METAN_VERSION:-latest}
-        METAN_COMMIT_HASH: ${METAN_COMMIT_HASH}
-    image: metan:${METAN_VERSION:-latest}
+    image: store:latest
     container_name: store
-    networks:
-    - app-tier
     restart: always
     volumes:
-    - .:/app/src/
+      - .:/app
     ports:
-    - 8000:8000
-    env_file:
-    - .env
-    depends_on:
-      pg_db:
-        condition: service_healthy
-      vector:
-        condition: service_healthy
-    environment: *common-env-variables
-
-  taskiq_worker:
-    container_name: taskiq_worker
-    image: metan:${METAN_VERSION:-latest}
-    command: taskiq worker common.taskiq.broker:rabbit_broker --no-configure-logging -fsd -tp task_*.py
-    restart: "no"
-    networks:
-    - app-tier
-    env_file:
-    - .env
-    volumes:
-    - .:/app/src/
+      - 8000:8000
     environment: *common-env-variables
     depends_on:
-      pg_db:
-        condition: service_healthy
-      vector:
-        condition: service_healthy
+      - pg_db
 
   pg_db:
-    image: hub.zxz.su/common/doci/timescaledb:2.6.0-pg13-d94d0207
-    hostname: store-pg-db
+    image: postgres:13
+    container_name: store-pg-db
     environment:
-    - POSTGRES_PASSWORD=store
-    - POSTGRES_USER=store
-    - POSTGRES_DB=store
+      - POSTGRES_PASSWORD=store
+      - POSTGRES_USER=store
+      - POSTGRES_DB=store
     volumes:
-    - store-pd-db-data:/var/lib/postgresql/data
+      - store-pd-db-data:/var/lib/postgresql/data
     restart: always
-    networks:
-    - app-tier
-    healthcheck:
-      test: pg_isready -U store
-      interval: 2s
-      timeout: 3s
-      retries: 40
     ports:
-    - "5435:5432"
+      - "5435:5432"
 
   pg_migrator:
     container_name: pg_migrator
-    image: metan:${METAN_VERSION:-latest}
+    image: store:latest
     command: python common/service_db/migrator.py upgrade
     restart: "no"
-    networks:
-    - app-tier
-    env_file:
-    - .env
     volumes:
-    - .:/app/src/
+      - .:/app
     environment: *common-env-variables
     depends_on:
-      pg_db:
-        condition: service_healthy
-
-  redis:
-    image: bitnami/redis:6.2.5
-    hostname: store-redis
-    restart: always
-    networks:
-    - app-tier
-    environment:
-      ALLOW_EMPTY_PASSWORD: "yes"
-    healthcheck:
-      test: redis-cli ping
-      interval: 1s
-      timeout: 3s
-      retries: 30
-
-  vector:
-    image: hub.zxz.su/common/doci/rabbitmq:3.8.11-management-d7c54c1d
-    container_name: vector
-    hostname: vector
-    restart: always
-    networks:
-    - app-tier
-    environment:
-    - RABBITMQ_DEFAULT_USER=guest
-    - RABBITMQ_DEFAULT_PASS=guest
-    - RABBITMQ_DEFAULT_VHOST=/
-    healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
-      interval: 1s
-      timeout: 3s
-      retries: 30
+      - pg_db
 
 volumes:
   store-pd-db-data:
