@@ -2,7 +2,7 @@ from fastapi import Depends, Path
 from loguru import logger
 from pydantic import BaseModel, ConfigDict, Field, NonNegativeInt
 from starlette import status
-from starlette.responses import JSONResponse
+from starlette.responses import Response
 
 from store.db.service_db.queries.add_item_to_order import AddItemToOrderDbQuery
 from store.web.api.public.router import public_router
@@ -32,7 +32,8 @@ class AddOrderItemResponse(BaseModel):
     order_id: NonNegativeInt = Field(..., title="Идентификатор заказа")
     product_id: NonNegativeInt = Field(..., title="Идентификатор товара")
     order_quantity: NonNegativeInt = Field(
-        ..., title="Новое количество товара в заказе",
+        ...,
+        title="Новое количество товара в заказе",
     )
 
 
@@ -68,10 +69,11 @@ class AddOrderItemResponse(BaseModel):
     },
 )
 async def add_order_item(
+    response: Response,
     request_body: AddOrderItemRequest,
     order_id: NonNegativeInt = Path(..., title="Идентификатор заказа"),
     order_db_query: AddItemToOrderDbQuery = Depends(),
-) -> JSONResponse:
+) -> AddOrderItemResponse:
     """
     Метод добавления товара в заказ.
 
@@ -79,10 +81,11 @@ async def add_order_item(
     Реализует добавление товара в заказ. Если товар уже есть в заказе, то увеличивает количество.
     При этом мы проверяем наличие товара. И выбрасываем ошибку, если товара нет в наличии.
     Так же проверяется наличие цулостности базы данных.(Если заказ или продукт не найден, то выбрасывается ошибка).
+    :param response: Response.
     :param order_id: Идентификатор заказа.
     :param request_body: Данные запроса (тело запроса).
     :param order_db_query: Объект запроса к БД.
-    :returns: Возвращает JSON-ответ
+    :returns: Возвращает AddOrderItemResponse
     """
     result_add_item = await order_db_query(
         order_id=order_id,
@@ -94,11 +97,15 @@ async def add_order_item(
         f"Количество в заказе: {result_add_item.order_quantity}",
     )
     if result_add_item.order_quantity == request_body.quantity:
-        return JSONResponse(
-            status_code=status.HTTP_201_CREATED,
-            content={},
+        response.status_code = status.HTTP_201_CREATED
+        return AddOrderItemResponse(
+            order_id=order_id,
+            product_id=result_add_item.product_id,
+            order_quantity=result_add_item.order_quantity,
         )
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={},
+    response.status_code = status.HTTP_200_OK
+    return AddOrderItemResponse(
+        order_id=order_id,
+        product_id=result_add_item.product_id,
+        order_quantity=result_add_item.order_quantity,
     )
