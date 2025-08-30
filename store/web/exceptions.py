@@ -9,6 +9,7 @@ from store.web.error_responses import (  # noqa: WPS235
     order_not_found,
 )
 
+
 class OrderNotFoundError(ServiceError):
     """Заказ не найден."""
 
