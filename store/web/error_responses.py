@@ -29,9 +29,9 @@ order_not_found = ErrorResponse(
 
 order_check_violation = ErrorResponse(
     body=ErrResponseBody(
-        message="Недостаточное количество товара или товар не найден.",
+        message="Недостаточное количество товара.",
         error_code=PARAMS_CHECK_VIOLATION_ERR_CODE,
-        verbose_message="Недостаточное количество товара или товар не найден.",
+        verbose_message="Недостаточное количество товара.",
     ),
     status_code=status.HTTP_409_CONFLICT,
 )
