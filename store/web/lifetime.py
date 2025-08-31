@@ -68,7 +68,7 @@ def register_exception_handler(  # noqa: WPS231 C901
         request: Request,
         exc: ServiceError,
     ) -> Response:
-        """Обработка ошибок shub_Exception.
+        """Обработка ошибок store_Exception.
 
         :param request: запрос от пользователя
         :param exc: ошибка возникшая во время обработки запроса
