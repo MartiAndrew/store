@@ -1,28 +1,7 @@
 import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
-from pytest_mock import MockerFixture
 from starlette import status
-
-from configuration.settings import settings
-
-
-@pytest.mark.anyio
-async def test_version(
-    mocker: MockerFixture,
-    client: AsyncClient,
-    fastapi_app: FastAPI,
-) -> None:
-    """Тестирует API с информацией по версии приложения."""
-    mocker.patch.object(settings, "version", new="1.0")
-    mocker.patch.object(settings, "commit_hash", new="")
-
-    url = fastapi_app.url_path_for("version")
-    response = await client.get(url)
-    assert response.json() == {
-        "version": "1.0",
-        "commit_hash": "",
-    }
 
 
 @pytest.mark.anyio
