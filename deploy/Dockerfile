@@ -7,8 +7,8 @@ RUN pip install poetry==1.6.1 &&  \
     poetry config virtualenvs.create false && \
     poetry config installer.max-workers 10
 
-RUN poetry install
-
 COPY . /app/src/
+
+RUN poetry install
 
 CMD ["python", "store/web/main.py"]

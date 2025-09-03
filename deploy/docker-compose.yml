@@ -17,7 +17,7 @@ services:
     container_name: store
     restart: always
     volumes:
-      - .:/app
+      - .:/app/src
     ports:
       - 8000:8000
     environment: *common-env-variables
@@ -43,7 +43,7 @@ services:
     command: python common/service_db/migrator.py upgrade
     restart: "no"
     volumes:
-      - .:/app
+      - .:/app/src
     environment: *common-env-variables
     depends_on:
       - pg_db

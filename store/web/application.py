@@ -1,4 +1,3 @@
-from importlib import metadata
 from pathlib import Path
 
 from asgi_correlation_id import CorrelationIdMiddleware
@@ -35,7 +34,6 @@ def init_app() -> FastAPI:  # noqa: WPS213
     app = FastAPI(
         title=SERVICE_NAME_LOWER,
         description=SERVICE_NAME_LOWER,
-        version=metadata.version(SERVICE_NAME_LOWER),
         docs_url=None,
         redoc_url=None,
         openapi_url="/api/openapi.json",

@@ -16,7 +16,7 @@ from configuration.app_settings.sentry_settings import SentrySettings
 from configuration.app_settings.service_db_settings import ServiceDbSettings
 from configuration.app_settings.telemetry_settings import TelemetrySettings
 from configuration.app_settings.web_settings import WebSettings
-from configuration.constants import ENV_PREFIX, SERVICE_NAME_LOWER
+from configuration.constants import ENV_PREFIX
 
 
 class Settings(BaseSettings):
@@ -35,8 +35,6 @@ class Settings(BaseSettings):
         json_schema_extra={"examples": [{}]},
     )
 
-    # Версия сервиса (проставляется в докере из гитлаба)
-    version: str = metadata.version(SERVICE_NAME_LOWER)
     # Хеш коммита (проставляется в докере из гитлаба)
     commit_hash: str = ""
     # Окружение
